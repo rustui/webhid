@@ -6,19 +6,22 @@ use core_foundation::{
 
 use super::{
     io_hid_device::{IOHIDDeviceGetProperty, IOHIDDeviceRef},
-    io_hid_device_keys::kIOHIDProductIDKey,
+    io_hid_device_keys::{kIOHIDProductIDKey, kIOHIDVendorIDKey},
 };
 
 pub struct HIDDevice {
     device_ref: IOHIDDeviceRef,
+    pub vendor_id: Option<i32>,
     pub product_id: Option<i32>,
 }
 
 impl HIDDevice {
     pub fn new(device_ref: IOHIDDeviceRef) -> Self {
+        let vendor_id = Self::get_property_i32(device_ref, kIOHIDVendorIDKey);
         let product_id = Self::get_property_i32(device_ref, kIOHIDProductIDKey);
         Self {
             device_ref,
+            vendor_id,
             product_id,
         }
     }

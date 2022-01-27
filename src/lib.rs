@@ -8,7 +8,8 @@ fn hid_test() {
     let devices = hid.get_devices();
     for device in devices {
         println!(
-            "product_id: 0x{:04x}",
+            "vendor_id: {:04x}, product_id: 0x{:04x}",
+            device.vendor_id.unwrap_or_default(),
             device.product_id.unwrap_or_default()
         );
     }

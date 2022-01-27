@@ -33,15 +33,3 @@ impl HID {
         devices.into_iter().map(|device| HIDDevice::new(device))
     }
 }
-
-#[test]
-fn hid_test() {
-    let hid = HID::new();
-    let devices = hid.get_devices();
-    for device in devices {
-        println!(
-            "product_id: 0x{:04x}",
-            device.product_id.unwrap_or_default()
-        );
-    }
-}
