@@ -1,4 +1,4 @@
-use core_foundation::{base::CFTypeRef, string::CFStringRef};
+use core_foundation::{base::CFTypeRef, string::CFStringRef, runloop::CFRunLoopRef};
 
 pub type __darwin_natural_t = ::std::os::raw::c_uint;
 pub type __darwin_mach_port_name_t = __darwin_natural_t;
@@ -32,12 +32,7 @@ pub struct __CFDictionary {
 pub type CFDictionaryRef = *const __CFDictionary;
 pub type CFTimeInterval = f64;
 pub type mach_port_t = __darwin_mach_port_t;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct __CFRunLoop {
-    _unused: [u8; 0],
-}
-pub type CFRunLoopRef = *mut __CFRunLoop;
+
 pub type dispatch_block_t = *mut ::std::os::raw::c_void;
 pub type dispatch_queue_t = *mut dispatch_queue_s;
 #[repr(C)]

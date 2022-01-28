@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 
-use core_foundation::{mach_port::CFAllocatorRef, set::CFSetRef};
+use core_foundation::{mach_port::CFAllocatorRef, set::CFSetRef, string::CFStringRef, runloop::CFRunLoopRef};
 
 use super::io_hid_device::IOHIDDeviceRef;
 
@@ -13,12 +13,7 @@ pub type IOOptionBits = UInt32;
 pub type CFTypeID = ::std::os::raw::c_ulong;
 pub type CFIndex = ::std::os::raw::c_long;
 pub type CFTypeRef = *const ::std::os::raw::c_void;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct __CFString {
-    _unused: [u8; 0],
-}
-pub type CFStringRef = *const __CFString;
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct __CFArray {
@@ -31,12 +26,7 @@ pub struct __CFDictionary {
     _unused: [u8; 0],
 }
 pub type CFDictionaryRef = *const __CFDictionary;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct __CFRunLoop {
-    _unused: [u8; 0],
-}
-pub type CFRunLoopRef = *mut __CFRunLoop;
+
 pub type dispatch_block_t = *mut ::std::os::raw::c_void;
 pub type dispatch_queue_t = *mut dispatch_queue_s;
 #[repr(C)]

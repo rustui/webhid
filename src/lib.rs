@@ -7,10 +7,9 @@ fn hid_test() {
     let hid = HID::new();
     let devices = hid.get_devices();
     for device in devices {
-        println!(
-            "vendor_id: {:04x}, product_id: 0x{:04x}",
-            device.vendor_id.unwrap_or_default(),
-            device.product_id.unwrap_or_default()
-        );
+        println!("product_name: {}", device.get_product_name());
+        println!("vendor_id: {}", device.get_vendor_id());
+        println!("product_id: {}", device.get_product_id());
+        println!("{:x?}", device.get_report_descriptor());
     }
 }
