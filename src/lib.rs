@@ -1,4 +1,5 @@
 mod platform_impl;
+mod public;
 
 #[test]
 fn hid_test() {
