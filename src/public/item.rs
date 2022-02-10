@@ -1,4 +1,4 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, mem, rc::Rc};
 
 #[repr(u8)]
 enum Type {
@@ -49,7 +49,8 @@ enum ReservedTag {
     Long = 0xF, // 1111
 }
 #[repr(u8)]
-enum Tag {
+#[derive(Clone, Copy)]
+pub enum Tag {
     Default = (MainTag::Default as u8) << 2 | Type::Main as u8,
     Input = (MainTag::Input as u8) << 2 | Type::Main as u8,
     Output = (MainTag::Output as u8) << 2 | Type::Main as u8,
@@ -81,6 +82,12 @@ enum Tag {
     Long = (ReservedTag::Long as u8) << 2 | Type::Reserved as u8,
 }
 
+impl From<u8> for Tag {
+    fn from(n: u8) -> Tag {
+        unsafe { mem::transmute(n) }
+    }
+}
+
 struct Header {
     size: usize,
     item_type: u8,
@@ -98,8 +105,9 @@ impl Header {
 }
 
 pub struct Item {
-    tag: u8,
+    pub tag: u8,
     payload_size: usize,
+    pub short_data: u32,
     previous: Option<Rc<RefCell<Box<Item>>>>,
     next: Option<Rc<RefCell<Box<Item>>>>,
     parent: Option<Rc<RefCell<Box<Item>>>>,
@@ -118,14 +126,15 @@ impl Item {
         } else {
             payload_size = if header.size == 0x3 { 4 } else { header.size };
             if Self::get_header_size(tag) + payload_size <= bytes.len() {
-                // short_data.copy_from_slice(
-                //     &bytes[Self::get_header_size(tag)..Self::get_header_size(tag) + payload_size],
-                // );
+                for i in 0..payload_size {
+                    short_data |= (bytes[Self::get_header_size(tag) + i] as u32) << i * 8;
+                }
             }
         }
         let this = Self {
             tag,
             payload_size,
+            short_data,
             previous: previous.clone(),
             next: None,
             parent: None,
