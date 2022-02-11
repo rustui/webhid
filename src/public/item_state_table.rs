@@ -1,6 +1,6 @@
-use std::{isize, mem};
+use std::{cell::RefCell, isize, mem, rc::Rc};
 
-use super::Tag;
+use super::{collection::Collection, Tag};
 #[derive(Default)]
 pub struct GlobalItemState {
     pub usage_page: u32,
@@ -48,6 +48,7 @@ pub struct ItemStateTable {
     pub report_id: u32,
     pub global_stack: Vec<GlobalItemState>,
     pub local: LocalItemState,
+    pub collection: Option<Rc<RefCell<Box<Collection>>>>,
 }
 
 impl ItemStateTable {
